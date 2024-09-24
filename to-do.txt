@@ -1,0 +1,17 @@
+# TODO Document for Project Optimization
+
+## General Optimization Tasks
+- [ ] Review and optimize the Vite configuration for better performance.
+- [ ] Implement dynamic imports to reduce initial bundle size.
+- [ ] Analyze the current chunk sizes and identify large modules.
+- [ ] Adjust `build.rollupOptions.output.manualChunks` to improve chunking.
+- [ ] Increase `build.chunkSizeWarningLimit` if necessary to suppress warnings.
+
+## Specific Tasks
+- [ ] Investigate the use of `"use client"` directive in components and ensure compatibility.
+- [ ] Update dependencies to their latest versions to benefit from performance improvements.
+- [ ] Refactor components that are causing large bundle sizes.
+- [ ] Test the application after each optimization to ensure functionality remains intact.
+
+## Notes
+- Consider using tools like Webpack Bundle Analyzer or Vite's built-in analysis tools to visualize the bundle size and identify areas for improvement.

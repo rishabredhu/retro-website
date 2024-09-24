@@ -1,0 +1,62 @@
+# Node.js dependencies
+node_modules/
+/node_modules
+
+# Build output
+/dist
+/build
+dist-ssr
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# Large 3D model files and assets
+node_modules
+*.glb
+*.obj
+*.fbx
+*.dae
+*.stl
+*.blend
+/assets/**/*.{glb,obj,fbx,dae,stl,blend}
+/public/assets/**/*.{glb,obj,fbx,dae,stl,blend}
+/src/assets/**/*.{glb,obj,fbx,dae,stl,blend}
+
+# IDE files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*.local
+
+# Personal configuration
+.npmrc

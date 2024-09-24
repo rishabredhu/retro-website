@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./",  // Changed from "src" to "./" to include the root directory
+    "paths": {
+      "@/*": ["src/*"]  // Updated to point to the src directory
+    },
+    "types": ["@nextui-org/react", "node", "vite/client"]  // Added "vite/client" for Vite-specific types
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/types/**/*.d.ts",
+    "vite.config.ts"  // Include Vite config file
+  ],
+  "exclude": ["node_modules", "dist"]  // Added "dist" to exclude the build output directory
+}
