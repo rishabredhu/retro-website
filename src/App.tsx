@@ -10,14 +10,22 @@ import Hero from './components/hero/Hero';
 
 import StarCanvas from './components/ui/StarCanvas';
 import LatestUpdate from './components/update-bar/LatestUpdate';
-import ChatBot from './components/chatbot/holographic';
 import LiquidBorder from './components/border/liquidBorder';
 
 import FutureAgent from './components/chatbot/holographic';
 import GameAgent from './components/chatbot/retroArcade'; 
 import SpectralBackground from './components/ui/spectral-background';
 
-
+/**
+ * Logger function for development purposes
+ * @param message - The message to log
+ * @param data - Optional data to log
+ */
+const logger = (message: string, data?: any) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[App] ${message}`, data);
+  }
+};
 
 /**
  * App Component
@@ -26,6 +34,7 @@ import SpectralBackground from './components/ui/spectral-background';
  * and manages the state for the chatbot functionality.
  */
 const App: React.FC = () => {
+  logger('App component rendered');
   useGoogleAnalytics();
 
   // Initialize scrollContainer ref for managing scroll behavior
@@ -36,6 +45,7 @@ const App: React.FC = () => {
   const [isAutoSwitching, setIsAutoSwitching] = useState<boolean>(true);
 
   useEffect(() => {
+    logger('useEffect for auto-switching triggered', { isAutoSwitching });
     let intervalId: NodeJS.Timeout;
 
     if (isAutoSwitching) {
@@ -47,34 +57,36 @@ const App: React.FC = () => {
     return () => {
       if (intervalId) {
         clearInterval(intervalId);
+        logger('Auto-switching interval cleared');
       }
     };
   }, [isAutoSwitching]);
 
   const switchChatbot = () => {
     setCurrentChatbot((prevChatbot) => {
-      switch (prevChatbot) {
-        case 'holographic':
-          return 'retroArcade';
-        case 'retroArcade':
-          return 'holographic';
-        default:
-          return 'holographic';
-      }
+      const newChatbot = prevChatbot === 'holographic' ? 'retroArcade' : 'holographic';
+      logger('Chatbot switched', { from: prevChatbot, to: newChatbot });
+      return newChatbot;
     });
   };
 
   const toggleAutoSwitch = () => {
-    setIsAutoSwitching((prev) => !prev);
+    setIsAutoSwitching((prev) => {
+      const newState = !prev;
+      logger('Auto-switch toggled', { newState });
+      return newState;
+    });
   };
 
   const renderChatbot = () => {
+    logger('Rendering chatbot', { currentChatbot });
     switch (currentChatbot) {
       case 'holographic':
         return <FutureAgent />;
       case 'retroArcade':
         return <GameAgent />;
       default:
+        logger('Unknown chatbot type, defaulting to FutureAgent');
         return <FutureAgent />;
     }
   };
@@ -106,7 +118,7 @@ const App: React.FC = () => {
                 <SpectralBackground />
               </div>
 
-              {/* {renderChatbot()} */}
+              {renderChatbot()}
             </div>
           </div>
           <LiquidBorder />

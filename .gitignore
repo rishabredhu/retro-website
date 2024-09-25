@@ -17,15 +17,15 @@ dist-ssr
 
 # Large 3D model files and assets
 node_modules
-*.glb
-*.obj
-*.fbx
-*.dae
-*.stl
-*.blend
-/assets/**/*.{glb,obj,fbx,dae,stl,blend}
-/public/assets/**/*.{glb,obj,fbx,dae,stl,blend}
-/src/assets/**/*.{glb,obj,fbx,dae,stl,blend}
+# *.glb
+# *.obj
+# *.fbx
+# *.dae
+# *.stl
+# *.blend
+# /assets/**/*.{glb,obj,fbx,dae,stl,blend}
+# /public/assets/**/*.{glb,obj,fbx,dae,stl,blend}
+# /src/assets/**/*.{glb,obj,fbx,dae,stl,blend}
 
 # IDE files
 .vscode/*
@@ -60,3 +60,4 @@ lerna-debug.log*
 
 # Personal configuration
 .npmrc
+.vercel

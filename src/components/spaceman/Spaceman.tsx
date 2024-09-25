@@ -3,16 +3,17 @@ import { OrbitControls, useAnimations, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Group } from "three";
 import CanvasLoader from "../loader/loader";
-import spaceman from "../../assets/3d/ship_in_clouds.glb";
+// import spaceman from "../../assets/3d/spaceman.glb";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'; 
 import * as THREE from 'three';
-
-
-
+import { Scene } from 'three';
 
 // Import necessary components
 // import StaticSpaceman from './path/to/StaticSpaceman';
 
+/**
+ * Interface for Spaceman component props
+ */
 interface SpacemanProps {
   scale: number[];
   position: number[];
@@ -20,26 +21,38 @@ interface SpacemanProps {
   rotationY: number;
 }
 
+/**
+ * Spaceman component for rendering a 3D spaceman model
+ */
 const Spaceman = ({ scale, position, rotationX, rotationY }: SpacemanProps) => {
   const spacemanRef = useRef<any>();
-  // Importing the .glb file using a different method
   const loader = new GLTFLoader();
-  const [scene, setScene] = useState<THREE.Scene | null>(null); // Initialize state with correct type
-  const [animations, setAnimations] = useState<THREE.AnimationClip[] | null>(null); // Update state type to allow AnimationClip[]
+  const [scene, setScene] = useState<THREE.Scene | null>(null);
+  const [animations, setAnimations] = useState<THREE.AnimationClip[] | null>(null);
 
   useEffect(() => {
-    loader.load(spaceman, (gltf) => {
-      // Update the state to accept the correct type for scene
-      setScene(gltf.scene as unknown as THREE.Scene); // Cast to unknown first to avoid type error
-      setAnimations(gltf.animations); // Now this will match the state type
-    });
-    
-  }, []);
+    // Load the 3D model and animations
+    loader.load(
+      '/assets/3d/spaceman.glb', // Path to the 3D model file
+      (gltf) => {
+        // Success callback
+        setScene(gltf.scene as unknown as THREE.Scene);
+        setAnimations(gltf.animations);
+      },
+      undefined, // Progress callback (optional)
+      (error) => {
+        // Error callback
+        console.error('An error occurred while loading the 3D model:', error);
+      }
+    );
+  }, []); // Empty dependency array ensures this effect runs only once
 
-  const { actions } = useAnimations(animations || [], spacemanRef); // Provide default empty array if animations is null
+  const { actions } = useAnimations(animations || [], spacemanRef);
 
   useEffect(() => {
-    console.log("Available animations: ", animations);
+    if (import.meta.env.DEV) {
+      console.log("Available animations: ", animations);
+    }
     if (actions && actions["Idle"]) {
       actions["Idle"].play();
     }
@@ -52,15 +65,21 @@ const Spaceman = ({ scale, position, rotationX, rotationY }: SpacemanProps) => {
       scale={[scale[0], scale[1], scale[2]]} 
       rotation={[rotationX, rotationY + 2.2, 0]}
     >
-      <primitive object={scene || new THREE.Object3D()} /> // Fallback to a new Object3D if scene is null
+      <primitive object={scene || new THREE.Object3D()} />
     </group>
   );
 };
 
+/**
+ * Interface for SpacemanCanvas component props
+ */
 interface SpacemanCanvasProps {
   scrollContainer: React.RefObject<HTMLElement>;
 }
 
+/**
+ * SpacemanModel component for loading and animating the spaceman model
+ */
 const SpacemanModel: React.FC = () => {
   const { scene, animations } = useGLTF('/assets/3d/spaceman.glb');
   const ref = useRef<any>();
@@ -75,6 +94,9 @@ const SpacemanModel: React.FC = () => {
   return <primitive ref={ref} object={scene} />;
 };
 
+/**
+ * SpacemanCanvas component for rendering the 3D scene with the spaceman
+ */
 const SpacemanCanvas: React.FC<SpacemanCanvasProps> = ({ scrollContainer }) => {
   const [rotationX, setRotationX] = useState(0);
   const [rotationY, setRotationY] = useState(0);
@@ -97,9 +119,9 @@ const SpacemanCanvas: React.FC<SpacemanCanvasProps> = ({ scrollContainer }) => {
   useEffect(() => {
     const canvas: HTMLCanvasElement | null = document.getElementById('yourCanvasId') as HTMLCanvasElement | null;
 
-    const handleContextLost = (event: Event) => { // Specify the type of 'event'
+    const handleContextLost = (event: Event) => {
       event.preventDefault();
-      console.log('WebGL context lost');
+      console.error('WebGL context lost');
       // Handle context loss (e.g., stop animations)
     };
 
@@ -108,29 +130,25 @@ const SpacemanCanvas: React.FC<SpacemanCanvasProps> = ({ scrollContainer }) => {
       // Reinitialize your WebGL context here
     };
 
-    // Ensure 'canvas' is not null before adding event listeners
     if (canvas) {
       canvas.addEventListener('webglcontextlost', handleContextLost, false);
       canvas.addEventListener('webglcontextrestored', handleContextRestored, false);
     }
 
-    // Cleanup listeners on component unmount
     return () => {
-      if (canvas) { // Check if canvas is not null
+      if (canvas) {
         canvas.removeEventListener('webglcontextlost', handleContextLost);
         canvas.removeEventListener('webglcontextrestored', handleContextRestored);
       }
     };
-  }, []); // Ensure this effect runs only once on mount
+  }, []);
 
   return (
     <Canvas>
       <Suspense fallback={<CanvasLoader />}>
-        
-          <group rotation={[rotationX, rotationY, 0]}>
-            <SpacemanModel />
-          </group>
-        
+        <group rotation={[rotationX, rotationY, 1]} position={[0, 0, 0]}>
+          <SpacemanModel />
+        </group>
       </Suspense>
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />

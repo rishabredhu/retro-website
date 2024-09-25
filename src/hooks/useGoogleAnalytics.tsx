@@ -9,6 +9,22 @@ declare global {
   }
 }
 
+/**
+ * A custom React hook to initialize and set up Google Analytics tracking.
+ * 
+ * This hook dynamically loads the Google Analytics script and sets up the
+ * global gtag function for tracking. It should be called once at the top level
+ * of your React application.
+ *
+ * @example
+ * // In your App.tsx or a top-level component
+ * import { useGoogleAnalytics } from './hooks/useGoogleAnalytics';
+ * 
+ * function App() {
+ *   useGoogleAnalytics();
+ *   // ... rest of your component
+ * }
+ */
 export const useGoogleAnalytics = () => {
   useEffect(() => {
     // Load the script

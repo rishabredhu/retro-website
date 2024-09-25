@@ -87,8 +87,6 @@ const StarBackground = () => {
         />
         <pointsMaterial attach="material" size={12} color={0xffffff} /> {/* Increased size for brighter appearance */}
       </points>
-      
-      {/* Camera controls for interaction */}
       <OrbitControls />
     </group>
   )

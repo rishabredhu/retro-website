@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useRef, useEffect } from 'react'
-// Ensure the path is correct and the Spaceman component is exported properly
-import SpacemanCanvas from "../spaceman/Spaceman" // Check if this path is correct
+
+import SpacemanCanvas from "../spaceman/Spaceman"
 import { useGLTF } from '@react-three/drei'
 import SpaceWarpCanvas from './SpaceWarpCanvas'
 interface HeroProps {
